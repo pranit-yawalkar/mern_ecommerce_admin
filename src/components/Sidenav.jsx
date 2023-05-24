@@ -2,9 +2,10 @@
 import { useState } from "react";
 import { Menu, Sidebar, MenuItem } from "react-pro-sidebar";
 import { useProSidebar } from "react-pro-sidebar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { tokens } from "../theme";
 import { useTheme, Box, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import PostAddIcon from "@mui/icons-material/PostAdd";
@@ -22,19 +23,40 @@ import BrandingWatermarkIcon from "@mui/icons-material/BrandingWatermark";
 import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
 import PaletteIcon from "@mui/icons-material/Palette";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
-
 import { useSidebarContext } from "./SidebarContext";
+
 const Item = ({ title, to, icon, selected, setSelected }) => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const useStyles = makeStyles((theme) => ({
+    menuItem: {
+      "&:hover": {
+        color: colors.blueAccent[500],
+      },
+    },
+  }));
+
+  const classes = useStyles();
 
   return (
     <MenuItem
       active={selected === title}
-      style={{ color: colors.grey[100] }}
-      onClick={() => setSelected(title)}
+      style={
+        selected === title
+          ? {
+              backgroundColor: colors.greenAccent[400],
+              color: colors.blueAccent[900],
+            }
+          : {}
+      }
+      className={classes.menuItem}
+      onClick={() => {
+        setSelected(title);
+        navigate(to);
+      }}
       icon={icon}
-      href={<Link to={to} />}
     >
       <Typography>{title}</Typography>
     </MenuItem>
@@ -71,8 +93,8 @@ const Sidenav = () => {
           backgroundColor: "transparent !important",
         },
         "& .menu-item:hover": {
-          color: `${colors.blueAccent[500]} !important`,
-          backgroundColor: "transparent !important",
+          color: `${colors.grey[500]} !important`,
+          backgroundColor: `${colors.grey[500]} !important`,
         },
         "& .menu-item.active": {
           color: `${colors.greenAccent[500]} !important`,
@@ -154,17 +176,17 @@ const Sidenav = () => {
               </Box>
             </Box>
           )} */}
-          <Box paddingLeft={collapsed ? undefined : "10%"}>
+          <Box>
             <Typography
               variant="h6"
               color={colors.grey[300]}
-              sx={{ m: "15px 20px 5px 20px" }}
+              sx={!collapsed ? { ml: "20px" } : { textAlign: "center" }}
             >
               Data
             </Typography>
             <Item
               title="Dashboard"
-              to="/"
+              to="/admin"
               icon={<HomeOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -172,21 +194,21 @@ const Sidenav = () => {
 
             <Item
               title="Customers"
-              to="/team"
+              to="/admin/customers"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Orders"
-              to="/team"
+              to="/admin/orders"
               icon={<ReceiptLongIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Messages"
-              to="/team"
+              to="/admin/messages"
               icon={<MessageIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -195,62 +217,62 @@ const Sidenav = () => {
             <Typography
               variant="h6"
               color={colors.grey[300]}
-              sx={{ m: "15px 20px 5px 20px" }}
+              sx={!collapsed ? { ml: "20px" } : { textAlign: "center" }}
             >
               Catalog
             </Typography>
             <Item
               title="Add Product"
-              to="/form"
+              to="/admin/add-product"
               icon={<AddBusinessIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Product List"
-              to="/calendar"
+              to="/admin/product-list"
               icon={<ListAltIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Add Brand"
-              to="/calendar"
+              to="/admin/add-brand"
               icon={<AddCardIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Brand List"
-              to="/calendar"
+              to="/admin/brand-list"
               icon={<BrandingWatermarkIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Add Category"
-              to="/calendar"
+              to="/admin/add-category"
               icon={<AddToPhotosIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Category List"
-              to="/calendar"
+              to="/admin/category-list"
               icon={<CategoryIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Add Color"
-              to="/calendar"
+              to="/admin/add-color"
               icon={<AddToPhotosIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Color List"
-              to="/calendar"
+              to="/admin/color-list"
               icon={<PaletteIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -259,34 +281,34 @@ const Sidenav = () => {
             <Typography
               variant="h6"
               color={colors.grey[300]}
-              sx={{ m: "15px 20px 5px 20px" }}
+              sx={!collapsed ? { ml: "20px" } : { textAlign: "center" }}
             >
               Blogs
             </Typography>
             <Item
               title="Add Blog"
-              to="/bar"
+              to="/admin/add-blog"
               icon={<PostAddIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Blog List"
-              to="/pie"
+              to="/admin/blog-list"
               icon={<LibraryBooksIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Add Blog Category"
-              to="/line"
+              to="/admin/add-blog-category"
               icon={<PlaylistAddIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Blog Category List"
-              to="/geography"
+              to="/admin/blog-cat-list"
               icon={<TocIcon />}
               selected={selected}
               setSelected={setSelected}

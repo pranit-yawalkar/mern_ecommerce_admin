@@ -20,7 +20,7 @@ const ResetPassword = () => {
   const colorMode = useContext(ColorModeContext);
 
   return (
-    <Stack sx={{ height: "100vh" }}>
+    <Stack sx={{ height: "100vh", backgroundColor: colors.primary[400] }}>
       <Box marginLeft="auto" padding={"1em"}>
         <IconButton onClick={colorMode.toggleColorMode}>
           {theme.palette.mode === "dark" ? (
@@ -84,7 +84,6 @@ const ResetPassword = () => {
                 fontWeight: "bold",
                 padding: "10px 20px",
               }}
-              variant="contained"
               onClick={() => navigate("/admin")}
             >
               Change Password

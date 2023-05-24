@@ -20,6 +20,9 @@ import InboxIcon from "@mui/icons-material/Inbox";
 import MailIcon from "@mui/icons-material/Mail";
 import { Stack } from "@mui/material";
 import { Outlet } from "react-router-dom";
+import Loader from "./Loader";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import Topbar from "./Topbar";
 import { SidebarProvider } from "./SidebarContext";
 
@@ -96,6 +99,30 @@ const MainLayout = () => {
 
   const primary = theme.palette.primary.main;
 
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    axios.interceptors.request.use(
+      (config) => {
+        setLoading(true);
+        return config;
+      },
+      (err) => {
+        return Promise.reject(err);
+      }
+    );
+
+    axios.interceptors.response.use(
+      (config) => {
+        setLoading(false);
+        return config;
+      },
+      (err) => {
+        return Promise.reject(err);
+      }
+    );
+  }, [loading]);
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -105,14 +132,17 @@ const MainLayout = () => {
   };
 
   return (
-    <SidebarProvider>
-      <header style={{ height: "100%", width: "100%" }}>
-        <Topbar />
-        <main>
-          <Outlet />
-        </main>
-      </header>
-    </SidebarProvider>
+    <>
+      <Loader show={loading} />
+      <SidebarProvider>
+        <header style={{ height: "100%", width: "100%" }}>
+          <Topbar />
+          <main>
+            <Outlet />
+          </main>
+        </header>
+      </SidebarProvider>
+    </>
   );
 };
 

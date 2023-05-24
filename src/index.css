@@ -10,8 +10,19 @@ body {
   font-family: "Rubik", sans-serif;
 }
 
+.loader {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
 ::-webkit-scrollbar {
   width: 5px;
+  display: none;
 }
 
 /* Track */
@@ -27,4 +38,11 @@ body {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+.menu-item {
+  background: #dcdcdc !important;
+}
+.css-eh8qic:hover {
+  background: #0e7be9 !important;
 }
