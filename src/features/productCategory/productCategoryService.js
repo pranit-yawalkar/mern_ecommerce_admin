@@ -8,8 +8,20 @@ const getProductCategories = async () => {
   }
 };
 
+const createProductCategory = async (data) => {
+  const response = await axios.post(
+    `${base_url}product-category`,
+    data,
+    config
+  );
+  if (response) {
+    return response.data;
+  }
+};
+
 const productCategoryService = {
   getProductCategories,
+  createProductCategory,
 };
 
 export default productCategoryService;

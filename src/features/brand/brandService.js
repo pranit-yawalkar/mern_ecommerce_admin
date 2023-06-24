@@ -8,8 +8,16 @@ const getBrands = async () => {
   }
 };
 
+const createBrand = async (data) => {
+  const response = await axios.post(`${base_url}brand`, data, config);
+  if (response) {
+    return response.data;
+  }
+};
+
 const brandService = {
   getBrands,
+  createBrand,
 };
 
 export default brandService;
