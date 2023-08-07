@@ -1,68 +1,71 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import blogService from "./blogService";
+import couponService from "./couponService";
 import { toast } from "react-toastify";
 
 const initialState = {
-  blogs: [],
+  coupons: [],
   isError: false,
   isLoading: false,
   isSuccess: false,
   message: "",
 };
 
-export const getBlogs = createAsyncThunk("blog/getAll", async (thunkAPI) => {
-  try {
-    return await blogService.getBlogs();
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error);
-  }
-});
-
-export const addBlog = createAsyncThunk(
-  "blog/create",
-  async (data, thunkAPI) => {
+export const getCoupons = createAsyncThunk(
+  "coupon/getAll",
+  async (thunkAPI) => {
     try {
-      return await blogService.createBlog(data);
+      return await couponService.getCoupons();
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
 
-export const blogSlice = createSlice({
-  name: "blog",
+export const createCoupon = createAsyncThunk(
+  "coupon/create",
+  async (data, thunkAPI) => {
+    try {
+      return await couponService.createCoupon(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const couponSlice = createSlice({
+  name: "coupon",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getBlogs.pending, (state) => {
+      .addCase(getCoupons.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getBlogs.fulfilled, (state, action) => {
+      .addCase(getCoupons.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        state.blogs = action.payload;
+        state.coupons = action.payload;
       })
-      .addCase(getBlogs.rejected, (state, action) => {
+      .addCase(getCoupons.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error.message;
       })
-      .addCase(addBlog.pending, (state) => {
+      .addCase(createCoupon.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(addBlog.fulfilled, (state, action) => {
+      .addCase(createCoupon.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        state.createdBlog = action.payload;
+        state.createdCoupon = action.payload;
         if (state.isSuccess) {
-          toast.success("Blog Added Successfully!");
+          toast.success("Coupon Added Successfully!");
         }
       })
-      .addCase(addBlog.rejected, (state, action) => {
+      .addCase(createCoupon.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
@@ -74,4 +77,4 @@ export const blogSlice = createSlice({
   },
 });
 
-export default blogSlice.reducer;
+export default couponSlice.reducer;

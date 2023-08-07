@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Menu, TextField, MenuItem } from "@mui/material";
 import { Formik, useFormik } from "formik";
 import * as yup from "yup";
@@ -10,8 +10,13 @@ import { useTheme } from "@emotion/react";
 import { tokens } from "../theme";
 import Dropzone, { useDropzone } from "react-dropzone";
 import DropZone from "../components/DropZone";
-import { useDispatch } from "react-redux";
-import { createProductCategory } from "../features/productCategory/productCategorySlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createProductCategory,
+  getProductCategory,
+  updateProductCategory,
+} from "../features/productCategory/productCategorySlice";
+import { useNavigate, useParams } from "react-router-dom";
 
 const categorySChema = yup.object().shape({
   title: yup.string().required("Required"),
@@ -22,17 +27,34 @@ const AddCategory = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const dispatch = useDispatch();
-
+  const params = useParams();
+  const navigate = useNavigate();
+  const { categoryId } = params;
+  const category = useSelector((state) => state?.productCategory?.category);
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      title: "",
+      title: category?.title || "",
     },
     validationSchema: categorySChema,
     onSubmit: (values) => {
-      dispatch(createProductCategory(values));
-      formik.resetForm();
+      if (categoryId) {
+        dispatch(updateProductCategory({ id: categoryId, data: values }));
+        navigate("/admin/category-list");
+      } else {
+        dispatch(createProductCategory(values));
+        formik.resetForm();
+      }
     },
   });
+
+  useEffect(() => {
+    if (categoryId) {
+      dispatch(getProductCategory(categoryId));
+    } else {
+      formik.values.title = "";
+    }
+  }, [categoryId]);
 
   return (
     <Box m="20px">
@@ -67,7 +89,7 @@ const AddCategory = () => {
         </Box>
         <Box display="flex" justifyContent="end" mt="80px">
           <Button type="submit" color="secondary" variant="contained">
-            Create New Category
+            {categoryId ? "Update" : "Create New"} Category
           </Button>
         </Box>
       </form>

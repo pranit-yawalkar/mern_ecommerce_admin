@@ -19,7 +19,6 @@ const Orders = () => {
   }, []);
 
   const orders = useSelector((state) => state?.order?.orders);
-  console.log(orders);
   const orderData = [];
   for (let i = 0; i < orders?.length; i++) {
     orderData.push({

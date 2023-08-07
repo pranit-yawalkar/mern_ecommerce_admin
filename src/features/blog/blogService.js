@@ -8,8 +8,16 @@ const getBlogs = async () => {
   }
 };
 
+const createBlog = async (data) => {
+  const response = await axios.post(`${base_url}blog`, data, config);
+  if (response) {
+    return response.data;
+  }
+};
+
 const blogService = {
   getBlogs,
+  createBlog,
 };
 
 export default blogService;

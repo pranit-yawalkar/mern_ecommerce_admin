@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import blogCategoryService from "./blogCategoryService";
+import { toast } from "react-toastify";
 
 const initialState = {
   blogCategories: [],
@@ -14,6 +15,17 @@ export const getBlogCategories = createAsyncThunk(
   async (thunkAPI) => {
     try {
       return await blogCategoryService.getBlogCategories();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const createBlogCategory = createAsyncThunk(
+  "blogCategory/create",
+  async (data, thunkAPI) => {
+    try {
+      return await blogCategoryService.createBlogCategory(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -40,6 +52,27 @@ export const blogCategorySlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error.message;
+      })
+      .addCase(createBlogCategory.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createBlogCategory.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.blogCategories = action.payload;
+        if (state.isSuccess) {
+          toast.success("Blog Category Added Successfully!");
+        }
+      })
+      .addCase(createBlogCategory.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error.message;
+        if (state.isError) {
+          toast.error("Something went wrong!");
+        }
       });
   },
 });

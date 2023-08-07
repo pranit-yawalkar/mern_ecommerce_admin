@@ -11,6 +11,7 @@ import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 import AddCardIcon from "@mui/icons-material/AddCard";
+import AddBoxIcon from "@mui/icons-material/AddBox";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 
@@ -23,6 +24,7 @@ import BrandingWatermarkIcon from "@mui/icons-material/BrandingWatermark";
 import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
 import PaletteIcon from "@mui/icons-material/Palette";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import FeaturedPlayListIcon from "@mui/icons-material/FeaturedPlayList";
 import { useSidebarContext } from "./SidebarContext";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
@@ -310,6 +312,27 @@ const Sidenav = () => {
               title="Blog Category List"
               to="/admin/blog-cat-list"
               icon={<TocIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={!collapsed ? { ml: "20px" } : { textAlign: "center" }}
+            >
+              Coupons
+            </Typography>
+            <Item
+              title="Add Coupon"
+              to="/admin/add-coupon"
+              icon={<AddBoxIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Coupon List"
+              to="/admin/coupon-list"
+              icon={<FeaturedPlayListIcon />}
               selected={selected}
               setSelected={setSelected}
             />

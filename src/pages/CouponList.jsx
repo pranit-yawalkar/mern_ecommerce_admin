@@ -1,76 +1,63 @@
 import React, { useEffect } from "react";
-import { Box, Icon, IconButton, useTheme } from "@mui/material";
+import { Box, useTheme, IconButton } from "@mui/material";
 import { DataGrid, GridDeleteIcon, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../theme";
 import EditIcon from "@mui/icons-material/Edit";
 
 import Header from "../components/Header";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts } from "../features/product/productSlice";
+import { getCoupons } from "../features/coupon/couponSlice";
 
-const Products = () => {
+const CouponList = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
   const dispatch = useDispatch();
-  const products = useSelector((state) => state?.product?.products);
+  const coupons = useSelector((state) => state?.coupon?.coupons);
+
   useEffect(() => {
-    dispatch(getProducts());
+    dispatch(getCoupons());
   }, []);
 
-  const productData = [];
-  for (let i = 0; i < products?.length; i++) {
-    productData.push({
+  const couponData = [];
+  for (let i = 0; i < coupons?.length; i++) {
+    couponData.push({
       id: i + 1,
-      title: products[i]?.title,
-      description: products[i]?.description,
-      brand: products[i]?.brand?.title,
-      quantity: products[i]?.quantity,
-      price: products[i]?.price,
-      totalRating: products[i]?.totalRating,
-      tags: products[i]?.tag.join(", "),
+      coupon: coupons[i]?.name,
+      discount: coupons[i]?.discount,
+      expiry: new Date(coupons[i]?.expiry).toLocaleDateString(),
     });
   }
 
   const columns = [
-    { field: "id", headerName: "Id", width: 100 },
-    { field: "title", headerName: "Title", width: 150 },
-    {
-      field: "description",
-      headerName: "Description",
-      width: 200,
-    },
-    {
-      field: "brand",
-      headerName: "Brand",
-      width: 100,
-    },
-    { field: "quantity", headerName: "Quantity", width: 100 },
-    { field: "price", headerName: "Price", width: 100 },
-    { field: "totalRating", headerName: "Total Ratings", width: 100 },
-    { field: "tags", headerName: "Tags", width: 200 },
+    { field: "id", headerName: "Id", width: 200 },
+    { field: "coupon", headerName: "Coupon Name", width: 200 },
+    { field: "discount", headerName: "Discount", width: 200 },
+    { field: "expiry", headerName: "Expiry", width: 200 },
     {
       field: "actions",
       headerName: "Actions",
-      width: 200,
+      width: 500,
       sortable: false,
       disableClickEventBubbling: true,
-      renderCell: (params) => (
-        <>
-          <IconButton>
-            <EditIcon />
-          </IconButton>
-          <IconButton>
-            <GridDeleteIcon />
-          </IconButton>
-        </>
-      ),
+      renderCell: (params) => {
+        return (
+          <>
+            <IconButton>
+              <EditIcon />
+            </IconButton>
+            <IconButton>
+              <GridDeleteIcon />
+            </IconButton>
+          </>
+        );
+      },
     },
   ];
+
   return (
     <Box p="10px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="Products" subtitle="welcome to you Product List" />
+        <Header title="Coupons" subtitle="welcome to you Coupon List" />
       </Box>
       <Box
         m="8px 0 0 0"
@@ -106,7 +93,7 @@ const Products = () => {
         }}
       >
         <DataGrid
-          rows={productData}
+          rows={couponData}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
         />
@@ -115,4 +102,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default CouponList;

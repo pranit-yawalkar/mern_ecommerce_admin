@@ -25,6 +25,8 @@ import AddBrand from "./pages/AddBrand";
 import AddProduct from "./pages/AddProduct";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AddCoupon from "./pages/AddCoupon";
+import CouponList from "./pages/CouponList";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -66,8 +68,15 @@ function App() {
                 <Route path="add-blog-category" element={<AddBlogCategory />} />
                 <Route path="add-color" element={<AddColor />} />
                 <Route path="add-category" element={<AddCategory />} />
+                <Route
+                  path="add-category/:categoryId"
+                  element={<AddCategory />}
+                />
                 <Route path="add-brand" element={<AddBrand />} />
+                <Route path="add-brand/:brandId" element={<AddBrand />} />
                 <Route path="add-product" element={<AddProduct />} />
+                <Route path="add-coupon" element={<AddCoupon />} />
+                <Route path="coupon-list" element={<CouponList />} />
               </Route>
             </Routes>
           </ThemeProvider>
